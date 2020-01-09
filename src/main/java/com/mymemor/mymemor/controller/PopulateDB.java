@@ -16,31 +16,31 @@ import java.io.IOException;
 @RequestMapping("/dev")
 public class PopulateDB {
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
     @Autowired
-    AccountRepository accountRepository;
+    private AccountRepository accountRepository;
 
     @GetMapping("/add-user")
-    public void addDummyUser() throws IOException {
-        userRepository.deleteAll();
-        Account dummy = new Account();
+    public void addDummyUser() {
+        accountRepository.deleteAll();
         User luffy = new User();
 
-        dummy.setEmail("xyz@gmail.com");
-        dummy.setUsername("dummy");
-        dummy.setEncPassword(Utils.encryptPassword("Dummy Password"));
-        dummy.setUser(luffy);
-
-//        luffy.setAccount(dummy);
-        luffy.setName("Mokey D luffy");
+        luffy.setName("Monkey D Luffy");
         luffy.setProfilePicURL("https://i.imgur.com/kB7StJm.png");
         luffy.setSchoolName("xyxzz");
         luffy.setCurrentCity("Kolkata");
         luffy.setHometown("syzff");
 
-//        userRepository.save(luffy);
-        accountRepository.save(dummy);
+        Account dummy = new Account();
+        dummy.setEmail("xyz@gmail.com");
+        dummy.setUsername("dummy");
+        dummy.setEncPassword(Utils.encryptPassword("Dummy Password"));
 
+
+        luffy.setAccount(dummy);
+        dummy.setUser(luffy);
+
+        userRepository.save(luffy);
     }
 
 }

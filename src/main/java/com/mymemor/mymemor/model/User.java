@@ -10,12 +10,15 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.URL;
+import org.springframework.context.annotation.Scope;
 
 import lombok.Getter;
 import lombok.Setter;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "users")
+@Scope("session")
 public class User extends Auditable {
 
     @Getter
@@ -35,11 +38,111 @@ public class User extends Auditable {
     @NotBlank
     private String profilePicURL;
 
-    @Getter
+    public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getProfilePicURL() {
+		return profilePicURL;
+	}
+
+	public void setProfilePicURL(String profilePicURL) {
+		this.profilePicURL = profilePicURL;
+	}
+
+	public String getSchoolName() {
+		return schoolName;
+	}
+
+	public void setSchoolName(String schoolName) {
+		this.schoolName = schoolName;
+	}
+
+	public String getCurrentCity() {
+		return currentCity;
+	}
+
+	public void setCurrentCity(String currentCity) {
+		this.currentCity = currentCity;
+	}
+
+	public String getHometown() {
+		return hometown;
+	}
+
+	public void setHometown(String hometown) {
+		this.hometown = hometown;
+	}
+
+	public List<Memory> getCreatedMemories() {
+		return createdMemories;
+	}
+
+	public void setCreatedMemories(List<Memory> createdMemories) {
+		this.createdMemories = createdMemories;
+	}
+
+	public List<Memory> getMemories() {
+		return memories;
+	}
+
+	public void setMemories(List<Memory> memories) {
+		this.memories = memories;
+	}
+
+	public List<BondRequest> getSentRequests() {
+		return sentRequests;
+	}
+
+	public void setSentRequests(List<BondRequest> sentRequests) {
+		this.sentRequests = sentRequests;
+	}
+
+	public List<BondRequest> getReceivedRequests() {
+		return receivedRequests;
+	}
+
+	public void setReceivedRequests(List<BondRequest> receivedRequests) {
+		this.receivedRequests = receivedRequests;
+	}
+
+	public Set<User> getMyPeople() {
+		return myPeople;
+	}
+
+	public void setMyPeople(Set<User> myPeople) {
+		this.myPeople = myPeople;
+	}
+
+	@Getter
     @Setter
     private String schoolName;
+	
+	@Getter
+    @Setter
+    private String collegeName;
 
-    @Getter
+    public String getCollegeName() {
+		return collegeName;
+	}
+
+	public void setCollegeName(String collegeName) {
+		this.collegeName = collegeName;
+	}
+
+	@Getter
     @Setter
     private String currentCity;
 

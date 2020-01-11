@@ -8,6 +8,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name="bond_requests")
 public class BondRequest extends Auditable {
@@ -17,7 +18,31 @@ public class BondRequest extends Auditable {
     @NotNull
     private BondRequestStatus bondRequestStatus = BondRequestStatus.PENDING;
 
-    @Getter
+    public BondRequestStatus getBondRequestStatus() {
+		return bondRequestStatus;
+	}
+
+	public void setBondRequestStatus(BondRequestStatus bondRequestStatus) {
+		this.bondRequestStatus = bondRequestStatus;
+	}
+
+	public User getFrom() {
+		return from;
+	}
+
+	public void setFrom(User from) {
+		this.from = from;
+	}
+
+	public User getTo() {
+		return to;
+	}
+
+	public void setTo(User to) {
+		this.to = to;
+	}
+
+	@Getter
     @Setter
     @ManyToOne
     @NotNull

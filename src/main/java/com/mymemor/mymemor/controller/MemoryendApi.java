@@ -1,6 +1,7 @@
 package com.mymemor.mymemor.controller;
- 
- 
+ import com.mymemor.mymemor.response.MypeopleResponse;
+
+import java.util.List;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -9,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
- 
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
  
 
@@ -39,29 +40,37 @@ public class MemoryendApi {
 	  public String addmemory (@Valid Memory memory)
 		{
 			 memoryRepo.save(memory); 
-			 User creator=memory.getCreator();
-			 creator.getCreatedMemories().add(memory);
-			creator.setCreatedMemories(creator.getCreatedMemories());
-			 Set<User>users=memory.getUsers();
-			 for(User user:users)
+			  memory.setCreator(/session.user );
+			  session.user.getCreatedMemories().add(memory);
+			  session.user.setCreatedMemories(creator.getCreatedMemories());
+			  Set<User>users=memory.getUsers();
+			  for(User user:users)
 			 {
 				 
 				 user.getMemories().add(memory);
 				 user.setMemories(user.getMemories() );
 			 }
+			  memoryRepo.save(memory); 
 			 return "memory has neen added";
 		 }
 	   
-	   @GetMapping("mypeople/{userid}")
-		  public Set<User> mypeople (@PathVariable(value = "userid") Long userId)
+	   @GetMapping("/mypeople(session)")
+		  public MypeopleRespose mypeople ()
 			{
-				 User user=userRepo.findById(userId).orElseThrow();;
+				 /* todoUser user=userRepo.findById(userId).orElseThrow();;
 				 return user.getMyPeople();
+				 find in seesion 
+				 */
+		   MypeopleResponse mypeopleresponse =new  MypeopleResponse();
+		   mypeopleresponse.setUser(session);
+		   List<BondRequest> recieverequest=session.getRecieveRequest();
+		   mypeopleresponse.setRecieveRequest(recieverequest);
+		   return mypeopleresponse;
 			}
 	  
 	   
-	   @GetMapping("sendrequest/{uid}")
-		  public void sendrequest (@PathVariable(value = "userid") Long userId)
+	   @PostMapping("/sendrequest")
+		  public void sendrequest (@RequestParam("username") @Valid String username)
 			{
 				 User user=userRepo.findById(userId).orElseThrow();
 				 

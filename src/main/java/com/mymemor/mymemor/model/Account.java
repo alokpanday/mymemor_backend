@@ -3,8 +3,11 @@ package com.mymemor.mymemor.model;
 import lombok.Getter;
 import lombok.Setter;
 
+<<<<<<< HEAD
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+=======
+>>>>>>> 9afd7168f561fd76e877daed2bdc43dbcae71b35
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -70,6 +73,11 @@ public class Account extends Auditable {
 	@Getter
     @Setter
     @NotNull
+<<<<<<< HEAD
     @OneToOne(cascade = CascadeType.ALL)
 	  private User user;
+=======
+    @OneToOne
+    private User user;
+>>>>>>> 9afd7168f561fd76e877daed2bdc43dbcae71b35
 }

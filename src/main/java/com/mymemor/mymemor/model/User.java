@@ -1,30 +1,25 @@
 package com.mymemor.mymemor.model;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.URL;
-import org.springframework.context.annotation.Scope;
-
-import lombok.Getter;
-import lombok.Setter;
+ 
+ 
 
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "users")
-@Scope("session")
+ 
 public class User extends Auditable {
 
     @Getter
     @Setter
     @NotNull
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Account account;
 
     @Getter

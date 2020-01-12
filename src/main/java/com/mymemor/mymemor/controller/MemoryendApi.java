@@ -1,7 +1,10 @@
 package com.mymemor.mymemor.controller;
- import com.mymemor.mymemor.response.MypeopleResponse;
+ import com.mymemor.mymemor.response.MymemoResponse;
+import com.mymemor.mymemor.response.MypeopleResponse;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -36,11 +39,14 @@ public class MemoryendApi {
 	@Autowired
 	private  BondRequestRepository bondRequestRepo  ;
 	
+	@Autowired
+	private MemoryRepository MemoryRepo;
+	
 	   @PostMapping("/addmemory")
 	  public String addmemory (@Valid Memory memory)
 		{
 			 memoryRepo.save(memory); 
-			  memory.setCreator(/session.user );
+			  memory.setCreator(session.user );
 			  session.user.getCreatedMemories().add(memory);
 			  session.user.setCreatedMemories(creator.getCreatedMemories());
 			  Set<User>users=memory.getUsers();
@@ -55,12 +61,8 @@ public class MemoryendApi {
 		 }
 	   
 	   @GetMapping("/mypeople(session)")
-		  public MypeopleRespose mypeople ()
-			{
-				 /* todoUser user=userRepo.findById(userId).orElseThrow();;
-				 return user.getMyPeople();
-				 find in seesion 
-				 */
+		  public MypeopleResponse mypeople ()
+			{ 
 		   MypeopleResponse mypeopleresponse =new  MypeopleResponse();
 		   mypeopleresponse.setUser(session);
 		   List<BondRequest> recieverequest=session.getRecieveRequest();
@@ -85,7 +87,7 @@ public class MemoryendApi {
 			}
 	   
 
-	   @GetMapping("acceptrequest/{brid}")
+	   @GetMapping("/acceptrequest/{brid}")
 		  public void acceptrequest (@PathVariable(value = "brid") Long BondRequestId)
 			{ 
 		   BondRequest br =bondRequestRepo.findById(BondRequestId).orElseThrow();
@@ -95,5 +97,53 @@ public class MemoryendApi {
 				return ;
 			}
 	   
+	   @GetMapping("/memoline/{sortby}")
+		  public MymemoResponse memoline(@PathVariable(value = "sortby") String type)
+			{ 
+		   MymemoResponse myMemoResponse;
+		   myMemoResponse.setStatus("success");
+		   List<Memory>memoline; 
+		   List<Memory>memories=new ArrayList<>();
+		   try {
+		        if(type=="create_time") {
+		        	
+                  memories.addAll(memoryRepo.findAllByOrderByCreate_TimeAsc());
+                 
+		        }
+		        else
+		        {
+		        	  memories.addAll(memoryRepo.findAllByOrderByMemory_TimeAsc());
+		         }
+		   }
+		   catch(Exception e)
+		   {
+			   myMemoResponse.setStatus("error"); 
+			   myMemoResponse.setError("not found memory");
+			   return myMemoResponse;
+		   }
+		        
+		        for(Memory memory:memories)
+                {
+              	 if(memory.getCreator().equals("/session") 
+              			 {
+              		 memoline.add(memory);
+              			 }
+              	 else
+              	 {
+              		 Set<User>users=memory.getUsers();
+              		 for(User user:users)
+              		 {
+              			 if(user.equals("//session")
+              					 {
+              				 memoline.add(memory);
+              					 }
+              		 }
+              		 
+              	 }
+                }
+		        myMemoResponse.setMemories(memoline);
+                return myMemoResponse; ;
+                  
+			}
  
 }
